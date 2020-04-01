@@ -1,0 +1,4 @@
+it\webSocket\MessageDecoder.class
+it\webSocket\MessageEncoder.class
+it\webSocket\Message.class
+it\webSocket\EchoServer.class
