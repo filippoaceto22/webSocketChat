@@ -1,0 +1,66 @@
+
+<html>
+    <head>
+        <title>Chat</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+
+        <table>
+            <tr>
+                <td colspan="2">
+                    <input type="text" id="username" placeholder="Username"/>
+                    <button type="button" onclick="connect();" >Connect</button>
+                    <button type="button" onclick="closeSocket();" >Disconnect</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea class="scrollabletextbox" readonly="true" rows="10" cols="80" id="log"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" size="51" id="msg" placeholder="Message"/>
+                    <button type="button" onclick="send();" >Send</button>
+                </td>
+            </tr>
+        </table>
+    </body>
+
+    <script>
+var ws;
+
+function connect() {
+    var username = document.getElementById("username").value;
+    
+    var host = "chatfilippoaceto.herokuapp.com/";
+    var pathname = "webSocketChat/";
+    
+    ws = new WebSocket("ws://" +host  + "echo/" + username);
+
+    ws.onmessage = function(event) {
+    var log = document.getElementById("log");
+        console.log(event.data);
+        var message = JSON.parse(event.data);
+        log.innerHTML += message.from + " : " + message.content + "\n";
+        log.scrollTop = log.scrollHeight;
+    };
+}
+
+function send() {
+    var content = document.getElementById("msg").value;
+    var json = JSON.stringify({
+        "content":content
+    });
+
+    ws.send(json);
+}
+function closeSocket(){
+    console.log(ws)
+                    ws.close();
+                }
+
+    </script>
+
+</html>
